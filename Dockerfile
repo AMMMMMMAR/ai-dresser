@@ -3,6 +3,10 @@ FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-devel
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
+# Disable Streamlit CORS and XSRF to allow file uploads through Hugging Face's reverse proxy
+ENV STREAMLIT_SERVER_ENABLE_CORS=false
+ENV STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=false
+
 RUN apt-get update && apt-get install -y \
     git \
     ffmpeg \
