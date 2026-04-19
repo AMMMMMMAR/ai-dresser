@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip setuptools wheel cython numpy
+RUN pip install --upgrade pip setuptools wheel cython "numpy<2.0.0"
 
 WORKDIR /app
 
