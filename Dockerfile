@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade pip "setuptools<70" wheel cython "numpy<2.0.0"
+# Upgrade PyTorch to >= 2.4.0 to support torch.UInt32Storage (which SAM models require)
+RUN pip install "torch>=2.4.0" "torchvision>=0.19.0" --index-url https://download.pytorch.org/whl/cu121
 
 WORKDIR /app
 
