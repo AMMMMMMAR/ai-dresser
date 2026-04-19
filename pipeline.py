@@ -2,6 +2,14 @@ import os
 import torch
 import trimesh
 from sam_3d_body import load_sam_3d_body_hf, SAM3DBodyEstimator
+from huggingface_hub import login
+
+# Authenticate with Hugging Face to access the gated Meta models
+hf_token = os.environ.get("HF_TOKEN")
+if hf_token:
+    login(token=hf_token)
+elif "HF_TOKEN" not in os.environ:
+    print("Warning: No HF_TOKEN environment variable found. Gated models may fail to download.")
 
 class AvatarExtractorPipeline:
     def __init__(self):
