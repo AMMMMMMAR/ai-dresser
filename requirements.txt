@@ -20,7 +20,6 @@ joblib
 seaborn
 wandb
 appdirs
-appnope
 ffmpeg-python
 cython
 jsonlines
