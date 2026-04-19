@@ -10,16 +10,14 @@ RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
     build-essential \
-    ninja-build \
     && rm -rf /var/lib/apt/lists/*
 
-# Fix potential torch/detectron2 issues, install cython early for xtcocotools
 RUN pip install --upgrade pip setuptools wheel cython numpy
 
 WORKDIR /app
 
-# Install detectron2 first from source (requires devel image and ninja)
-RUN pip install 'git+https://github.com/facebookresearch/detectron2.git@a1ce2f9' --no-build-isolation --no-deps
+# IMPORTANT: Instead of building from source (which is causing the crash), we use the pre-built wheel 
+RUN pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu121/torch2.1/index.html
 
 # Copy requirements
 COPY requirements.txt .
@@ -28,8 +26,6 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
-# Expose port for HuggingFace / FastApi
 EXPOSE 7860
 
-# CMD config for streamlit testing default
 CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
