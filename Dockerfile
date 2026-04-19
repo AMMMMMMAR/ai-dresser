@@ -16,8 +16,8 @@ RUN pip install --upgrade pip setuptools wheel cython numpy
 
 WORKDIR /app
 
-# IMPORTANT: Instead of building from source (which is causing the crash), we use the pre-built wheel 
-RUN pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu121/torch2.1/index.html
+# IMPORTANT: Build from source using git because no pre-compiled Python 3.11 wheels exist for PyTorch 2.1
+RUN pip install 'git+https://github.com/facebookresearch/detectron2.git@a1ce2f9' --no-build-isolation --no-deps
 
 # Copy requirements
 COPY requirements.txt .
