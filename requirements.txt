@@ -1,4 +1,3 @@
-torch
 pytorch-lightning
 pyrender==0.1.45
 opencv-python
@@ -22,7 +21,7 @@ seaborn
 wandb
 appdirs
 appnope
-ffmpeg
+ffmpeg-python
 cython
 jsonlines
 pytest
