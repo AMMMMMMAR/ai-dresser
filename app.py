@@ -19,6 +19,22 @@ except Exception as e:
     st.error(f"Failed to load model: {e}")
     st.stop()
 
+# Predefined Skin Tones Mapping for Frontend Coloring 
+skin_tones = {
+    "Fair": "#FDF1E8",
+    "Light": "#F3D8C4",
+    "Medium": "#D5AC8A",
+    "Tan": "#BB8D6A",
+    "Coco": "#7E4E30",
+    "Deep": "#3D2314"
+}
+
+with st.sidebar:
+    st.header("Avatar Settings")
+    selected_tone_name = st.selectbox("Select Skin Tone Category:", list(skin_tones.keys()), index=2)
+
+selected_color_hex = skin_tones[selected_tone_name]
+
 uploaded_file = st.file_uploader("Upload Full Body Picture", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -57,7 +73,7 @@ if uploaded_file is not None:
                     i=faces[:, 0],
                     j=faces[:, 1],
                     k=faces[:, 2],
-                    color='lightblue',
+                    color=selected_color_hex,
                     opacity=1.0,
                     lighting=dict(ambient=0.4, diffuse=0.8, specular=0.2, roughness=0.5)
                 )])
