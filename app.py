@@ -51,12 +51,12 @@ if uploaded_file is not None:
         st.header("Input Photo")
         st.image(temp_img_path, use_column_width=True)
 
-    with st.spinner("Extracting 3D Avatar..."):
-        try:
-            mesh_path = pipeline.extract_avatar(temp_img_path)
-            
-            with col2:
-                st.header("🧑‍🦲 3D Avatar")
+    with col2:
+        st.header("🧑‍🦲 3D Avatar")
+        
+        with st.spinner("Extracting 3D Avatar..."):
+            try:
+                mesh_path = pipeline.extract_avatar(temp_img_path)
                 
                 # Render 3D Model Interactively
                 import trimesh
@@ -95,5 +95,5 @@ if uploaded_file is not None:
                     st.download_button("Download 3D Model (.obj)", data=f, file_name="avatar.obj", mime="application/octet-stream")
                 st.success("Avatar Extraction Complete!")
 
-        except Exception as e:
-            st.error(f"Error processing image: {e}")
+            except Exception as e:
+                st.error(f"Error processing image: {e}")
