@@ -56,7 +56,7 @@ if uploaded_file is not None:
         
         with st.spinner("Extracting 3D Avatar..."):
             try:
-                mesh_path = pipeline.extract_avatar(temp_img_path)
+                mesh_path, pkl_path = pipeline.extract_avatar(temp_img_path)
                 
                 # Render 3D Model Interactively
                 import trimesh
@@ -91,8 +91,14 @@ if uploaded_file is not None:
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
-                with open(mesh_path, "rb") as f:
-                    st.download_button("Download 3D Model (.obj)", data=f, file_name="avatar.obj", mime="application/octet-stream")
+                col_dl1, col_dl2 = st.columns(2)
+                with col_dl1:
+                    with open(mesh_path, "rb") as f:
+                        st.download_button("Download 3D Model (.obj)", data=f, file_name="avatar.obj", mime="application/octet-stream", use_container_width=True)
+                with col_dl2:
+                    with open(pkl_path, "rb") as f:
+                        st.download_button("Download Skeleton Data (.pkl)", data=f, file_name="avatar_skeleton.pkl", mime="application/octet-stream", use_container_width=True)
+                
                 st.success("Avatar Extraction Complete!")
 
             except Exception as e:

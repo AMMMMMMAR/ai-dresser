@@ -1,6 +1,7 @@
 import os
 import torch
 import trimesh
+import pickle
 from sam_3d_body import load_sam_3d_body_hf, SAM3DBodyEstimator
 from huggingface_hub import login
 
@@ -48,4 +49,22 @@ class AvatarExtractorPipeline:
         out_mesh_path = os.path.join(out_dir, "avatar.obj")
         mesh.export(out_mesh_path)
         
-        return out_mesh_path
+        # Safely convert PyTorch tensors to Numpy arrays for universal reading
+        def to_numpy(data):
+            if isinstance(data, torch.Tensor):
+                return data.detach().cpu().numpy()
+            elif isinstance(data, dict):
+                return {k: to_numpy(v) for k, v in data.items()}
+            elif isinstance(data, list):
+                return [to_numpy(v) for v in data]
+            else:
+                return data
+                
+        safe_output = to_numpy(output)
+        
+        # Export skeleton and structural data
+        out_pkl_path = os.path.join(out_dir, "avatar_data.pkl")
+        with open(out_pkl_path, "wb") as f:
+            pickle.dump(safe_output, f)
+        
+        return out_mesh_path, out_pkl_path

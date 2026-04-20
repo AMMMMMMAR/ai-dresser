@@ -37,9 +37,9 @@ async def extract_avatar(background_tasks: BackgroundTasks, file: UploadFile = F
             shutil.copyfileobj(file.file, buffer)
             
         # Process image
-        mesh_path = pipeline.extract_avatar(file_path)
+        mesh_path, pkl_path = pipeline.extract_avatar(file_path)
         
-        if not os.path.exists(mesh_path):
+        if not os.path.exists(mesh_path) or not os.path.exists(pkl_path):
             raise HTTPException(status_code=500, detail="Failed to generate 3D mesh.")
             
         # Register the cleanup task to run AFTER the file is sent
