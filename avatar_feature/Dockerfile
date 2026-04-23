@@ -3,9 +3,6 @@ FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-devel
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
-# Disable Streamlit CORS and XSRF to allow file uploads through Hugging Face's reverse proxy
-ENV STREAMLIT_SERVER_ENABLE_CORS=false
-ENV STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=false
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -32,6 +29,6 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
-EXPOSE 7860
+EXPOSE 8000
 
-CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

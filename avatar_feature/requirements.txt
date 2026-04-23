@@ -35,6 +35,4 @@ huggingface_hub
 fastapi
 uvicorn[standard]
 python-multipart
-streamlit
 trimesh
-plotly
