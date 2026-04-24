@@ -5,6 +5,22 @@ echo "========================================"
 echo "  VDS V2 Backend Starting..."
 echo "========================================"
 
+# ── Step 0: Handle Google Cloud Credentials ──────────────────────────────────
+if [ -n "$GCP_SERVICE_ACCOUNT" ]; then
+    echo "▶ Configuring Google Cloud credentials..."
+    printf "%s" "$GCP_SERVICE_ACCOUNT" > /tmp/gcp_key.json
+    
+    # Check if file was written correctly and is not empty
+    if [ -s /tmp/gcp_key.json ]; then
+        export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp_key.json
+        echo "✅ Credentials configured (File size: $(stat -c%s /tmp/gcp_key.json) bytes)"
+    else
+        echo "❌ Error: Failed to write credentials file correctly."
+    fi
+else
+    echo "⚠️  GCP_SERVICE_ACCOUNT secret not found. Virtual Try-On may fail."
+fi
+
 # ── Step 1: Start Ollama in background ───────────────────────────────────────
 echo "▶ Starting Ollama service..."
 ollama serve &
