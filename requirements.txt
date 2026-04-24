@@ -1,9 +1,56 @@
 fastapi
 uvicorn[standard]
+python-multipart
+pydantic
+
+# Body measurements
 ultralytics
 opencv-python-headless
 numpy
+
+# Skin tone
+torch
+torchvision
 Pillow
-python-multipart
-pydantic
+
+# Recommendation
+requests
+
+# Virtual try-on
 google-genai
+
+# Avatar — SAM 3D Body full requirements
+trimesh
+huggingface_hub
+pytorch-lightning
+pyrender
+yacs
+scikit-image
+einops
+timm
+dill
+pandas
+rich
+hydra-core
+hydra-submitit-launcher
+hydra-colorlog
+pyrootutils
+webdataset
+networkx==3.2.1
+roma
+joblib
+seaborn
+wandb
+appdirs
+ffmpeg-python
+cython
+jsonlines
+pytest
+loguru
+optree
+fvcore
+pycocotools
+tensorboard
+
+# Env
+python-dotenv

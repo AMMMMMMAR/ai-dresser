@@ -1,31 +1,33 @@
-# Virtual AI Dressing (SmartFit) - Backend Repository
+---
+title: VDS V2 Backend
+emoji: 👗
+colorFrom: purple
+colorTo: blue
+sdk: docker
+pinned: false
+---
 
-Welcome to the backend repository for our Virtual AI Dressing project!
+# VDS V2 — Virtual Dressing System Backend
 
-This repository contains the core logic for our virtual ai fitting features. To keep our codebase clean and avoid merge conflicts as we work in parallel, we follow a strict branching workflow.
+FastAPI backend for the Virtual Dressing System V2.
 
-## 📌 Core Rules
+## Endpoints
 
-1. **Never push directly to `main` or `dev`.** All work must be done on your own feature branch.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Health check |
+| POST | `/measurements/extract` | Extract body measurements from two images |
+| POST | `/skin-tone/detect` | Detect skin tone from one image |
+| POST | `/recommendation/get` | Get size + color recommendation from LLM |
+| POST | `/avatar/generate` | Generate 3D body avatar |
+| POST | `/tryon/generate` | Virtual try-on |
 
-2. **Review Before Merging:** All Pull Requests (PRs) must be reviewed by at least one other team member before merging into `dev`.
+## Environment Variables (set in HF Spaces secrets)
 
-## 🌳 Branching Strategy
-
-We use a three-tier branch system:
-
-- **`main`:** The production-ready branch. This is the polished, stable version of our project used for final testing and demonstrations.
-- **`dev`:** The integration branch. This is where we combine all our individual features to test how they work together.
-- **`feature/...`:** Your personal working branch.
-
-## 🛠️ How to Work on a New Feature
-
-Follow these exact steps when starting a new task:
-
-**1. Update your local repository**
-Always start by making sure you have the latest code from the `dev` branch:
-
-```bash
-git checkout dev
-git pull origin dev
-```
+| Variable | Description |
+|----------|-------------|
+| `GOOGLE_CLOUD_PROJECT` | GCP project ID for virtual try-on |
+| `GOOGLE_CLOUD_LOCATION` | GCP region (default: us-central1) |
+| `HF_TOKEN` | HuggingFace token for SAM 3D Body model |
+| `OLLAMA_URL` | Ollama endpoint (default: http://127.0.0.1:11434/api/generate) |
+| `ALLOWED_ORIGINS` | Comma-separated allowed CORS origins e.g. https://your-app.netlify.app |
