@@ -35,12 +35,12 @@ if curl -s http://127.0.0.1:11434 > /dev/null 2>&1; then
     echo "✅ Base model ready"
 
     # ── Step 4: Build the custom smartfit model from Modelfile ───────────────
-    if [ -f "/app/rec_llm/Modelfile" ]; then
+    if [ -f "/app/recommendation/Modelfile.txt" ]; then
         echo "▶ Building smartfit custom model..."
-        ollama create smartfit -f /app/rec_llm/Modelfile
+        ollama create smartfit -f /app/recommendation/Modelfile.txt
         echo "✅ smartfit model ready"
     else
-        echo "⚠️  rec_llm/Modelfile not found — smartfit model not created."
+        echo "⚠️  recommendation/Modelfile.txt not found — smartfit model not created."
         echo "   Recommendation feature may use base model instead."
     fi
 else
