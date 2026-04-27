@@ -1,4 +1,4 @@
-FROM llama3.2:3b
+FROM llama3.1
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.9
@@ -14,20 +14,42 @@ RULES:
    XL: C:112-117|W:96-102|H:112-117
    XXL:C:119-124|W:104-109|H:119-124
 
-2. PANTS MATH: 
-   - Width = round(waist_cm / 2.54)
-   - Length = round(inseam_cm / 2.54)
-   - Result format: "Width*Length" (e.g., "32*34")
+2. PANTS SIZE: Use Waist for Width (W) and Inseam for Length (L). Format output strictly as "W*L".
+   WIDTH LOOKUP:
+   - If Waist 66-71 -> W=28
+   - If Waist 74-79 -> W=30
+   - If Waist 81-86 -> W=32
+   - If Waist 89-94 -> W=34
+   - If Waist 96-102 -> W=38
+   - If Waist 104-109 -> W=42
 
-3. COLORS (recommend exactly 3 based on skin tone):
-   Fair:   ["Emerald Green", "Royal Blue", "Ruby Red"]
-   Light:  ["Navy", "Hunter Green", "Burgundy"]
-   Medium: ["Olive", "Plum", "Deep Teal"]
-   Tan:    ["White", "Mustard", "Earthy Brown"]
-   Coco:   ["Cobalt Blue", "Bright Orange", "Turquoise"]
-   Deep:   ["Gold", "Pastel Pink", "Sky Blue"]
+   LENGTH LOOKUP:
+   - If Inseam 71-74 -> L=28
+   - If Inseam 76-79 -> L=30
+   - If Inseam 81-84 -> L=32
+   - If Inseam 86-89 -> L=34
+   - If Inseam 91-94 -> L=36
+   - If Inseam 96-99 -> L=38
+
+   EXAMPLE: Waist 89, Inseam 81 -> "34*32"
+
+3. RECOMMENDED COLORS (recommend exactly 5 based on skin tone):
+Fair: ["Emerald Green", "Royal Blue", "Ruby Red", "Silver", "Crisp White"]
+Light: ["Navy", "Hunter Green", "Burgundy", "Dusty Rose", "Lavender"]
+Medium: ["Olive", "Plum", "Deep Teal", "Metallic Bronze", "Forest Green"]
+Tan: ["White", "Mustard", "Earthy Brown", "Terracotta", "Coral"]
+Coco: ["Cobalt Blue", "Bright Orange", "Turquoise", "Vibrant Yellow", "Magenta"]
+Deep: ["Gold", "Pastel Pink", "Sky Blue", "Mint Green", "Royal Purple"]
+
+4. AVOID COLORS (recommend exactly 5 based on skin tone):
+Fair: ["Off-White", "Beige", "Camel", "Peachy Pink", "Soft Yellow"]
+Light: ["Beige", "Taupe", "Light Coral", "Pastel Yellow", "Pale Green"]
+Medium: ["Caramel", "Mustard", "Terracotta", "Light Gray", "Warm Orange"]
+Tan: ["Rust", "Pale Blue", "Neon Pink", "Dark Orange", "Deep Red"]
+Coco: ["Dark Brown", "Olive Green", "Deep Orange", "Warm Red", "Tan"]
+Deep: ["Dark Brown", "Charcoal", "Navy Blue", "Bright Yellow", "Black"]
 
 OUTPUT JSON ONLY:
-{"status":"success","shirt_size":"SINGLE_SIZE_STRING","pants_size":"W*L","recommended_colors":["c1","c2","c3"]}
+{"status":"success","shirt_size":"<size>","pants_size":"<W*L>","recommended_colors":["<color1>","<color2>","<color3>","<color4>","<color5>"],"avoid_colors":["<color1>","<color2>","<color3>","<color4>","<color5>"]}
 If input is missing or invalid: {"status":"error","message":"Invalid input"}
 """

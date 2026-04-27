@@ -5,10 +5,19 @@ OUTPUT: RecommendationResponse JSON → frontend
 """
 
 from fastapi import APIRouter, HTTPException
-from schemas import RecommendationRequest, RecommendationResponse, RecommendationResult
-from recommendation.service import get_recommendation
+from schemas import RecommendationRequest, RecommendationResponse, RecommendationResult, ColorResult
+from recommendation.service import get_recommendation, COLOR_HEX_MAP
 
 router = APIRouter(prefix="/recommendation", tags=["LLM Recommendation"])
+
+
+def map_colors_to_hex(color_list):
+    """Helper to convert list of color strings to list of ColorResult objects."""
+    results = []
+    for color_name in color_list:
+        hex_code = COLOR_HEX_MAP.get(color_name, "#888888") # Default gray if not found
+        results.append(ColorResult(name=color_name, hex=hex_code))
+    return results
 
 
 @router.post("/get", response_model=RecommendationResponse)
@@ -55,7 +64,8 @@ def recommend(request: RecommendationRequest):
         )
 
     # Validate required keys in LLM response
-    if "recommended_size" not in result or "recommended_colors" not in result:
+    required_keys = ["shirt_size", "pants_size", "recommended_colors", "avoid_colors"]
+    if not all(k in result for k in required_keys):
         return RecommendationResponse(
             success=False,
             error="LLM response missing required fields.",
@@ -65,9 +75,9 @@ def recommend(request: RecommendationRequest):
     return RecommendationResponse(
         success=True,
         recommendation=RecommendationResult(
-            recommended_size=result.get("recommended_size", "M"),
-            recommended_colors=result.get("recommended_colors", []),
-            size_reasoning=result.get("size_reasoning"),
-            color_reasoning=result.get("color_reasoning"),
+            shirt_size=result.get("shirt_size", "Unknown"),
+            pants_size=result.get("pants_size", "Unknown"),
+            recommended_colors=map_colors_to_hex(result.get("recommended_colors", [])),
+            avoid_colors=map_colors_to_hex(result.get("avoid_colors", []))
         )
     )
