@@ -46,8 +46,8 @@ if curl -s http://127.0.0.1:11434 > /dev/null 2>&1; then
     echo "✅ Ollama is running"
 
     # ── Step 3: Pull base LLM model ──────────────────────────────────────────
-    echo "▶ Pulling llama3.1 base model (this may take a few minutes)..."
-    ollama pull llama3.1
+    echo "▶ Pulling qwen2.5:3b  base model (this may take a few minutes)..."
+    ollama pull qwen2.5:3b 
     echo "✅ Base model ready"
 
     # ── Step 4: Build the custom smartfit model from Modelfile ───────────────
