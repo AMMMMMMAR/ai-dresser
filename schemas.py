@@ -6,6 +6,10 @@ Import from here to avoid duplication.
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, List
 
+# ── Shared Constants ──────────────────────────────────────────────────────────
+MAX_IMAGE_BYTES = 10 * 1024 * 1024  # 10 MB — enforced in all image routers per image
+MAX_REQUEST_BYTES = 40 * 1024 * 1024  # 40 MB — total request limit for global middleware
+
 
 # ── Measurements ──────────────────────────────────────────────────────────────
 

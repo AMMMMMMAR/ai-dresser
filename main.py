@@ -6,8 +6,10 @@ All features: measurements, skin tone, recommendation, avatar, tryon.
 
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from schemas import MAX_REQUEST_BYTES
 
 from measurement.router import router as measurement_router
 from skin_tone.router  import router as skin_tone_router
@@ -52,6 +54,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Global request size guard (40 MB) ────────────────────────────────────────
+@app.middleware("http")
+async def limit_upload_size(request: Request, call_next):
+    content_length = request.headers.get("content-length")
+    if content_length and int(content_length) > MAX_REQUEST_BYTES:
+        return JSONResponse(
+            status_code=413,
+            content={"detail": "Total request body too large. Maximum allowed request size is 40 MB."},
+        )
+    return await call_next(request)
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(measurement_router)

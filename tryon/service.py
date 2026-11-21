@@ -1,5 +1,10 @@
+"""
+Virtual Try-On Service
+Calls the external virtual try-on API.
+One product image per request — API limitation.
+"""
+
 import os
-import base64
 from google import genai
 from google.genai.types import (
     Image,
@@ -11,6 +16,7 @@ from google.genai.types import (
 VIRTUAL_TRYON_MODEL = "virtual-try-on-001"
 
 _client = None
+
 
 def get_client() -> genai.Client:
     global _client
@@ -28,15 +34,17 @@ def get_client() -> genai.Client:
 
 
 def run_virtual_tryon(
-    person_image_bytes: bytes,
+    person_image_bytes:  bytes,
     garment_image_bytes: bytes,
-    number_of_images: int = 1,
-    output_mime_type: str = "image/jpeg",
+    number_of_images:    int = 1,
+    output_mime_type:    str = "image/jpeg",
     safety_filter_level: str = "BLOCK_LOW_AND_ABOVE",
 ) -> list[bytes]:
     """
-    Calls the virtual try-on API with person and garment images.
+    Calls the virtual try-on API with one person image and one garment image.
     Returns a list of result images as raw bytes.
+    Note: API only supports one product image per request.
+    For full outfit try-on, call this function twice sequentially.
     """
     client = get_client()
 

@@ -7,6 +7,7 @@ OUTPUT: SkinToneResponse JSON → frontend + recommendation feature + avatar fea
 import gc
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from schemas import SkinToneResponse, SkinToneResult
+from schemas import MAX_IMAGE_BYTES
 from skin_tone.service import predict_skin_tone
 
 router = APIRouter(prefix="/skin-tone", tags=["Skin Tone Detection"])
@@ -32,6 +33,8 @@ async def detect_skin_tone(
         )
 
     image_bytes = await person_image.read()
+    if len(image_bytes) > MAX_IMAGE_BYTES:
+        raise HTTPException(status_code=413, detail="person_image exceeds the 10 MB size limit.")
 
     try:
         result = predict_skin_tone(image_bytes)

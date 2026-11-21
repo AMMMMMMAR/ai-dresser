@@ -3,7 +3,6 @@ __pycache__/
 *.pyc
 *.pth
 !skin_tone/model/best_skintone_model.pth
-*.pth
 *.pkl
 temp/
 .DS_Store

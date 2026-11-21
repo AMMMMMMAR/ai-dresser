@@ -10,6 +10,7 @@ import cv2
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 
 from schemas import MeasurementResponse
+from schemas import MAX_IMAGE_BYTES
 from measurement.service import extract_measurements
 
 router = APIRouter(prefix="/measurements", tags=["Body Measurements"])
@@ -56,7 +57,12 @@ async def extract_body_measurements(
 
     # ── Read bytes into RAM ───────────────────────────────────────────────────
     front_bytes = await front_image.read()
+    if len(front_bytes) > MAX_IMAGE_BYTES:
+        raise HTTPException(status_code=413, detail="front_image exceeds the 10 MB size limit.")
+
     side_bytes  = await side_image.read()
+    if len(side_bytes) > MAX_IMAGE_BYTES:
+        raise HTTPException(status_code=413, detail="side_image exceeds the 10 MB size limit.")
 
     front_img = decode_image(front_bytes, "front_image")
     side_img  = decode_image(side_bytes,  "side_image")

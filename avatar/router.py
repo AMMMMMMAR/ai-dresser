@@ -8,6 +8,7 @@ import gc
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 from typing import Optional
 from schemas import AvatarResponse
+from schemas import MAX_IMAGE_BYTES
 from avatar.service import generate_avatar
 
 router = APIRouter(prefix="/avatar", tags=["3D Avatar"])
@@ -33,6 +34,8 @@ async def generate_3d_avatar(
         )
 
     image_bytes = await person_image.read()
+    if len(image_bytes) > MAX_IMAGE_BYTES:
+        raise HTTPException(status_code=413, detail="person_image exceeds the 10 MB size limit.")
 
     try:
         mesh_b64 = generate_avatar(image_bytes, skin_tone=skin_tone)

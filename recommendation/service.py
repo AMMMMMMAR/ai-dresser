@@ -13,25 +13,65 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "smartfit")
 
 
 COLOR_HEX_MAP = {
-    "Emerald Green": "#50C878", "Royal Blue": "#4169E1", "Ruby Red": "#9B111E", 
-    "Silver": "#C0C0C0", "Crisp White": "#FFFFFF", "Navy": "#000080", 
-    "Hunter Green": "#355E3B", "Burgundy": "#800020", "Dusty Rose": "#DCAE96", 
-    "Lavender": "#E6E6FA", "Olive": "#808000", "Plum": "#8E4585", 
-    "Deep Teal": "#003636", "Metallic Bronze": "#A57164", "Forest Green": "#228B22", 
-    "White": "#FFFFFF", "Mustard": "#FFDB58", "Earthy Brown": "#8B4513", 
-    "Terracotta": "#E2725B", "Coral": "#FF7F50", "Cobalt Blue": "#0047AB", 
-    "Bright Orange": "#FFAC1C", "Turquoise": "#40E0D0", "Vibrant Yellow": "#FFDA03", 
-    "Magenta": "#FF00FF", "Gold": "#FFD700", "Pastel Pink": "#FFD1DC", 
-    "Sky Blue": "#87CEEB", "Mint Green": "#98FF98", "Royal Purple": "#7851A9",
-    "Off-White": "#FAF9F6", "Beige": "#F5F5DC", "Camel": "#C19A6B", 
-    "Peachy Pink": "#FFDAB9", "Soft Yellow": "#FDFD96", "Taupe": "#483C32", 
-    "Light Coral": "#F08080", "Pastel Yellow": "#FDFD96", "Pale Green": "#98FB98", 
-    "Caramel": "#FFD59A", "Light Gray": "#D3D3D3", "Warm Orange": "#FF8C00", 
-    "Rust": "#B7410E", "Pale Blue": "#AFEEEE", "Neon Pink": "#FF10F0", 
-    "Dark Orange": "#FF8C00", "Deep Red": "#850101", "Dark Brown": "#654321", 
-    "Olive Green": "#BAB86C", "Deep Orange": "#FF8C00", "Warm Red": "#FF4500", 
-    "Tan": "#D2B48C", "Charcoal": "#36454F", "Navy Blue": "#000080", 
-    "Bright Yellow": "#FFEA00", "Black": "#000000"
+    # ----- RECOMMENDED -----
+    "Soft Navy": "#2C3E50",
+    "Dusty Rose": "#D8A7B1",
+    "Cool Gray": "#BDC3C7",
+    "Lavender": "#C8A2C8",
+
+    "Teal": "#1ABC9C",
+    "Soft Blue": "#5DADE2",
+    "Mauve": "#AF7AC5",
+    "Charcoal Blue": "#34495E",
+
+    "Olive": "#808000",
+    "Coral": "#FF7F50",
+    "Cream": "#FFFDD0",
+    "Turquoise": "#40E0D0",
+
+    "Emerald": "#2ECC71",
+    "Mustard": "#D4AC0D",
+    "Burgundy": "#800020",
+
+    "Burnt Orange": "#CC5500",
+    "Deep Purple": "#6A0DAD",
+    "Gold": "#FFD700",
+    "Forest Green": "#228B22",
+
+    "Royal Blue": "#4169E1",
+    "Crimson": "#DC143C",
+    "White": "#FFFFFF",
+    "Fuchsia": "#FF00FF",
+
+    # ----- AVOID -----
+    "Pure Black": "#000000",
+    "Neon Green": "#39FF14",
+    "Bright Orange": "#FF5F1F",
+    "Warm Beige": "#F5DEB3",
+
+    "Neon Yellow": "#FFFF33",
+    "Lime Green": "#32CD32",
+    "Bright Red": "#FF0000",
+
+    "Icy Blue": "#E0FFFF",
+    "Cool Purple": "#800080",
+    "Silver": "#C0C0C0",
+    "Neon Pink": "#FF1493",
+
+    "Ash Gray": "#B2BEB5",
+    "Pale Yellow": "#FFFFE0",
+    "Mint Green": "#98FF98",
+    "Light Blue": "#ADD8E6",
+
+    "Dusty Beige": "#D7CCC8",
+    "Dark Gray": "#A9A9A9",
+    "Pastel Pink": "#FFD1DC",
+    "Pale Blue": "#B0E0E6",
+
+    "Mud Brown": "#5C4033",
+    "Olive Drab": "#6B8E23",
+    "Muted Gray": "#808080",
+    "Light Beige": "#F5F5DC"
 }
 
 
@@ -64,7 +104,7 @@ def get_recommendation(
     }
 
     try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=60)
+        response = requests.post(OLLAMA_URL, json=payload, timeout=180)
         response.raise_for_status()
     except requests.exceptions.ConnectionError:
         raise RuntimeError(
