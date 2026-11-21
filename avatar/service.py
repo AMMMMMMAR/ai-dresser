@@ -22,7 +22,7 @@ def load_avatar_model():
     if _pipeline is not None:
         return
     try:
-        from avatar.sam_3d_body import load_sam_3d_body_hf, SAM3DBodyEstimator
+        from sam_3d_body import load_sam_3d_body_hf, SAM3DBodyEstimator
         import os
         from huggingface_hub import login
 
@@ -73,8 +73,8 @@ def generate_avatar(image_bytes: bytes, skin_tone: str = None) -> str:
     estimator = _pipeline["estimator"]
 
     # Run SAM 3D Body estimator
-    # Pass PIL image directly to avoid temp file writes
-    outputs = estimator.process_one_image(pil_img, inference_type="body")
+    # Pass numpy array directly (estimator expects .shape attribute)
+    outputs = estimator.process_one_image(img_rgb, inference_type="body")
 
     if not outputs or len(outputs) == 0:
         raise ValueError("No human detected in the image.")

@@ -48,11 +48,15 @@ class RecommendationRequest(BaseModel):
     inseam_cm:  float = Field(description="Inseam length in cm")
     skin_tone:  str   = Field(description="Skin tone class from skin tone feature")
 
+class ColorResult(BaseModel):
+    name: str = Field(description="Name of the color")
+    hex: str  = Field(description="Hex code of the color")
+
 class RecommendationResult(BaseModel):
-    recommended_size:   str        = Field(description="Recommended clothing size e.g. M, L, XL")
-    recommended_colors: List[str]  = Field(description="List of recommended clothing colors")
-    size_reasoning:     Optional[str] = Field(None, description="Brief explanation for the size")
-    color_reasoning:    Optional[str] = Field(None, description="Brief explanation for color picks")
+    shirt_size:         str        = Field(description="Recommended shirt size")
+    pants_size:         str        = Field(description="Recommended pants size (W*L)")
+    recommended_colors: List[ColorResult]  = Field(description="List of recommended clothing colors")
+    avoid_colors:       List[ColorResult]  = Field(description="List of colors to avoid")
 
 class RecommendationResponse(BaseModel):
     success:        bool                           = True

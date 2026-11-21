@@ -60,6 +60,16 @@ app.include_router(recommendation_router)
 app.include_router(avatar_router)
 app.include_router(tryon_router)
 
+# ── Home / Redirect ───────────────────────────────────────────────────────────
+@app.get("/", include_in_schema=False)
+def index():
+    return {
+        "message": "Welcome to VDS V2 API",
+        "docs": "/docs",
+        "health": "/health",
+        "status": "Ready"
+    }
+
 # ── Health ────────────────────────────────────────────────────────────────────
 @app.get("/health", tags=["System"])
 def health():
